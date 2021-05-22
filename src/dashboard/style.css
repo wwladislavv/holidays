@@ -1,0 +1,47 @@
+.dashboard-page {
+    height: 100vh;
+    overflow: hidden;
+}
+.dashboard-page__container {
+    height: 100%;
+}
+.dashboard-page__container.loading {
+    align-items: center;
+}
+
+.dashboard-page__row {
+    width: 100%;
+}
+.dashboard-page__row .card-title {
+    color: var(--color-text-primary);
+}
+.dashboard-page__row .card {
+    padding: 1rem;
+    background-color: var(--color-bg-primary);
+}
+.dashboard-page__row .card-body {
+    max-height: 300px;
+    height: auto;
+    margin: 4px 0;
+    padding: 0;
+    overflow-y: auto;
+}
+.dashboard-page__row .card-body::-webkit-scrollbar {
+    width: 6px;
+}
+.dashboard-page__row .card-body::-webkit-scrollbar-thumb {
+    background-color: var(--color-icon-gray);
+    border-radius: 8px;
+}
+.dashboard-page__row .card-body::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, .5);
+    border-radius: 3px 3px 3px 3px;
+}
+
+.dashboard-page .table td {
+    padding: .35rem;
+    word-break: break-word;
+}
+.dashboard-page .table td.date-cell {
+    white-space: nowrap;
+}
