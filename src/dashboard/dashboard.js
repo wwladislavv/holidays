@@ -4,12 +4,13 @@ import React, {
 // import PropTypes from 'prop-types';
 import axios from 'axios';
 import {
-    Container, Row, Col,
-    Card, Table,
+    Container,
 } from 'react-bootstrap';
 import classnames from 'classnames';
 
 import { LoadingProvider } from '../components';
+
+import DivisionsRow from './components/divisions-row';
 
 import { parseHolidaysData } from './utils';
 
@@ -30,18 +31,18 @@ const Dashboard = () => {
     //
 
     //
-    const [holidaysData, setHolidaysData] = useState(null);
-    const [fetchingHolidaysData, setFetchingHolidaysData] = useState(false);
+    const [divisionsData, setDivisionsData] = useState(null);
+    const [fetchingDivisionsData, setFetchingDivisionsData] = useState(false);
 
-    const handleLoadHolidaysData = useCallback(
+    const handleLoadDivisionsData = useCallback(
         async () => {
-            setFetchingHolidaysData(true);
+            setFetchingDivisionsData(true);
 
             const response = await axios.get(apiURL);
             const data = parseHolidaysData(response.data);
-            setHolidaysData(data);
+            setDivisionsData(data);
 
-            setFetchingHolidaysData(false);
+            setFetchingDivisionsData(false);
         },
         []
     );
@@ -55,9 +56,9 @@ const Dashboard = () => {
 
     useEffect(
         () => {
-            handleLoadHolidaysData();
+            handleLoadDivisionsData();
         },
-        [handleLoadHolidaysData]
+        [handleLoadDivisionsData]
     );
     //
 
@@ -65,63 +66,14 @@ const Dashboard = () => {
         <div className="dashboard-page">
             <Container
                 className={classnames('dashboard-page__container d-flex justify-content-center', {
-                    loading: fetchingHolidaysData,
+                    loading: fetchingDivisionsData,
                 })}
             >
-                <LoadingProvider fetching={fetchingHolidaysData}>
-                    {holidaysData === null
+                <LoadingProvider fetching={fetchingDivisionsData}>
+                    {divisionsData === null
                         ? 'No data'
                         : (
-                            <Row
-                                className="dashboard-page__row justify-content-between"
-                                xs={1}
-                                md={2}
-                                lg={3}
-                            >
-                                {Object.keys(holidaysData).map(
-                                    (divisionName) => {
-                                        const divisionItemData = holidaysData[divisionName];
-                                        return (
-                                            <Col>
-                                                <Card>
-                                                    <Card.Header>
-                                                        <Card.Title>{divisionItemData.divisionTitle}</Card.Title>
-                                                    </Card.Header>
-                                                    <Card.Body>
-                                                        <Table
-                                                            borderless
-                                                            striped
-                                                            hover
-                                                        >
-                                                            <tbody>
-                                                                {divisionItemData.events.map(
-                                                                    ({
-                                                                        date, notes,
-                                                                        title, bunting,
-                                                                    }) => (
-                                                                        <tr>
-                                                                            <td className="date-cell">
-                                                                                {date}
-                                                                            </td>
-                                                                            <td className="flag-cell">
-                                                                                {bunting && <i className="bi bi-flag" />}
-                                                                            </td>
-                                                                            {/* TODO: add day of week column */}
-                                                                            <td>
-                                                                                {title} {!!notes?.length && `(${notes})`}
-                                                                            </td>
-                                                                        </tr>
-                                                                    )
-                                                                )}
-                                                            </tbody>
-                                                        </Table>
-                                                    </Card.Body>
-                                                </Card>
-                                            </Col>
-                                        );
-                                    }
-                                )}
-                            </Row>
+                            <DivisionsRow divisionsData={divisionsData} />
                         )}
                 </LoadingProvider>
             </Container>

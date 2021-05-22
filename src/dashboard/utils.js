@@ -1,5 +1,6 @@
 import startCase from 'lodash/startCase';
 import sortBy from 'lodash/sortBy';
+import moment from 'moment';
 
 const parseDivisionTitle = (divisionCode = '') => startCase(divisionCode.replaceAll('-', ' '));
 
@@ -12,7 +13,7 @@ export const parseHolidaysData = (holidaysDataByDivision = {}) => Object.keys(ho
             events: sortBy(
                 holidaysDataByDivision[divisionKeyName]?.events || [],
                 ['date', 'title']
-            ).map((item) => ({ ...item, date: item.date.replaceAll('-', '/') })),
+            ).map((item) => ({ ...item, date: moment(item.date) })),
             divisionTitle: parseDivisionTitle(holidaysDataByDivision[divisionKeyName]?.division),
         }
     }),

@@ -9,6 +9,9 @@ export const ColorVariants = Object.freeze({
     dark: 'dark',
 });
 
-export default {
-    ColorVariants,
-};
+export const Placements = Object.freeze({
+    top: 'top',
+    right: 'right',
+    bottom: 'bottom',
+    left: 'left',
+});
