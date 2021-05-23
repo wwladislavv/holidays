@@ -1,34 +1,58 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 // import PropTypes from 'prop-types';
 import {
-    Container,
+    Switch,
+    Route,
+} from 'react-router-dom';
+import {
+    Container, Row,
 } from 'react-bootstrap';
 import classnames from 'classnames';
 import isNull from 'lodash/isNull';
 
-import { LoadingProvider } from '../components';
+import routes from '../router/routes';
 
+import Navbar from './components/navbar';
 import DivisionsRow from './components/divisions-row';
+import DivisionCard from './components/division-card';
 
 import useDisivionsData from './hooks/use-divisions-data';
 
 import './style.css';
 
-// const DefaultFilter
+const defaultBreadcrumb = {
+    all: {
+        divisionTitle: '    All',
+    }
+};
 
 const Dashboard = () => {
-    //
-    // const [activeTabKey, setActiveTabKey] = useState(null);
-
-    // const handleTabSelect = useCallback(
-    //     (nextKey) => {
-    //         setActiveTabKey(nextKey);
-    //     },
-    //     []
-    // );
-    //
-
     const { divisionsData, fetchingDivisionsData } = useDisivionsData();
+
+    const breadcrumbsItemsByDivision = useMemo(
+        () => ({
+            ...defaultBreadcrumb,
+            ...divisionsData
+        }),
+        [divisionsData]
+    );
+
+    const renderDashboardRouteWithProps = useMemo(() => ({
+        root: () => (!isNull(divisionsData) ? <DivisionsRow divisionsData={divisionsData} /> : 'No Data'),
+        details: (routeProps) => (
+            <Row
+                className="dashboard-page__row single"
+                xs={1}
+            >
+                {divisionsData && (
+                    <DivisionCard
+                        // eslint-disable-next-line react/prop-types
+                        {...divisionsData?.[routeProps.match.params.divisionName]}
+                    />
+                )}
+            </Row>
+        ),
+    }), [divisionsData]);
 
     return (
         <div className="dashboard-page">
@@ -37,15 +61,24 @@ const Dashboard = () => {
                     loading: fetchingDivisionsData,
                 })}
             >
-                <h1>UK bank holidays</h1>
+                <Navbar
+                    navItems={breadcrumbsItemsByDivision}
+                    fetching={fetchingDivisionsData}
+                />
 
-                <LoadingProvider fetching={fetchingDivisionsData}>
-                    {isNull(divisionsData)
-                        ? 'No data found'
-                        : (
-                            <DivisionsRow divisionsData={divisionsData} />
-                        )}
-                </LoadingProvider>
+                <Switch>
+                    <Route
+                        path={routes.dashboard.route}
+                        exact
+                        component={renderDashboardRouteWithProps.root}
+                    />
+
+                    <Route
+                        path={routes.dashboard.detailed}
+                        exact
+                        component={renderDashboardRouteWithProps.details}
+                    />
+                </Switch>
             </Container>
         </div>
     );

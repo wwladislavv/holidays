@@ -8,7 +8,7 @@ const DivisionsRow = ({ divisionsData }) => (
     <Row
         className="dashboard-page__row"
         xs={1}
-        md={2}
+        lg={2}
     >
         {Object.keys(divisionsData).map(
             (divisionName) => (

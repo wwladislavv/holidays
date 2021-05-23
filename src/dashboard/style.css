@@ -1,6 +1,10 @@
 .dashboard-page {
     height: 100vh;
-    overflow: hidden;
+    overflow-y: auto;
+
+    @media (screen & min-width: 991px) {
+        overflow: hidden;
+    }
 }
 .dashboard-page__container {
     display: flex;
@@ -13,9 +17,6 @@
     justify-content: center;
 }
 
-.dashboard-page__row {
-    width: 100%;
-}
 .dashboard-page__row .card {
     margin-bottom: 12px;
 }
@@ -27,8 +28,12 @@
     color: var(--color-text-primary);
 }
 .dashboard-page__row .card {
-    padding: 1rem;
+    padding: .6rem;
     background-color: var(--color-bg-primary);
+
+    @media (screen & min-width: 767px) {
+        padding: 1rem;
+    }
 }
 .dashboard-page__row .card-body {
     max-height: 300px;
@@ -36,6 +41,9 @@
     margin: 4px 0;
     padding: 0;
     overflow-y: auto;
+}
+.dashboard-page__row.single .card-body {
+    max-height: 400px;
 }
 .dashboard-page__row .card-body::-webkit-scrollbar {
     width: 6px;
@@ -47,6 +55,36 @@
 .dashboard-page__row .card-body::-webkit-scrollbar-track {
     background-color: rgba(255, 255, 255, .5);
     border-radius: 3px 3px 3px 3px;
+}
+
+.dashboard-page__navbar {
+    flex-direction: column;
+
+    @media (screen & min-width: 767px) {
+        flex-direction: row;
+    }
+}
+.dashboard-page__navbar .navbar-brand {
+    margin-bottom: 8px;
+
+    @media (screen & min-width: 767px) {
+        margin-bottom: 0;
+    }
+}
+.dashboard-page__navbar .navbar-brand,
+.dashboard-page__navbar .navbar-text {
+    padding: 0;
+    line-height: 1;
+}
+.dashboard-page__navbar-link {
+    transition: color .3s, text-decoration .3s;
+    text-decoration: none;
+}
+a.dashboard-page__navbar-link.active,
+a.dashboard-page__navbar-link:focus,
+a.dashboard-page__navbar-link:hover {
+    color: #17a2b8 !important;
+    text-decoration: none;
 }
 
 .dashboard-page .table td {
