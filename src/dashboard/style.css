@@ -3,16 +3,27 @@
     overflow: hidden;
 }
 .dashboard-page__container {
+    display: flex;
+    flex-direction: column;
     height: 100%;
+    padding-top: 44px;
 }
 .dashboard-page__container.loading {
     align-items: center;
+    justify-content: center;
 }
 
 .dashboard-page__row {
     width: 100%;
 }
+.dashboard-page__row .card {
+    margin-bottom: 12px;
+}
+.dashboard-page__row .card-header {
+    background-color: transparent;
+}
 .dashboard-page__row .card-title {
+    margin: 0;
     color: var(--color-text-primary);
 }
 .dashboard-page__row .card {
@@ -42,6 +53,10 @@
     padding: .35rem;
     word-break: break-word;
 }
-.dashboard-page .table td.date-cell {
+.dashboard-page .table .table-row-separator {
+    background-color: rgba(0,0,0,.2);
+}
+.dashboard-page .table td.date-cell,
+.dashboard-page .table td.weekday-cell {
     white-space: nowrap;
 }

@@ -1,22 +1,20 @@
-import React, {
-    useEffect, useCallback, useState,
-} from 'react';
+import React from 'react';
 // import PropTypes from 'prop-types';
-import axios from 'axios';
 import {
     Container,
 } from 'react-bootstrap';
 import classnames from 'classnames';
+import isNull from 'lodash/isNull';
 
 import { LoadingProvider } from '../components';
 
 import DivisionsRow from './components/divisions-row';
 
-import { parseHolidaysData } from './utils';
+import useDisivionsData from './hooks/use-divisions-data';
 
 import './style.css';
 
-const apiURL = 'https://www.gov.uk/bank-holidays.json';
+// const DefaultFilter
 
 const Dashboard = () => {
     //
@@ -30,48 +28,20 @@ const Dashboard = () => {
     // );
     //
 
-    //
-    const [divisionsData, setDivisionsData] = useState(null);
-    const [fetchingDivisionsData, setFetchingDivisionsData] = useState(false);
-
-    const handleLoadDivisionsData = useCallback(
-        async () => {
-            setFetchingDivisionsData(true);
-
-            const response = await axios.get(apiURL);
-            const data = parseHolidaysData(response.data);
-            setDivisionsData(data);
-
-            setFetchingDivisionsData(false);
-        },
-        []
-    );
-    // useEffect(
-    //     () => {
-    //         const firstDivisionName = Object.keys(holidaysData || [])?.[0];
-    //         setActiveTabKey(firstDivisionName || null);
-    //     },
-    //     [holidaysData]
-    // );
-
-    useEffect(
-        () => {
-            handleLoadDivisionsData();
-        },
-        [handleLoadDivisionsData]
-    );
-    //
+    const { divisionsData, fetchingDivisionsData } = useDisivionsData();
 
     return (
         <div className="dashboard-page">
             <Container
-                className={classnames('dashboard-page__container d-flex justify-content-center', {
+                className={classnames('dashboard-page__container', {
                     loading: fetchingDivisionsData,
                 })}
             >
+                <h1>UK bank holidays</h1>
+
                 <LoadingProvider fetching={fetchingDivisionsData}>
-                    {divisionsData === null
-                        ? 'No data'
+                    {isNull(divisionsData)
+                        ? 'No data found'
                         : (
                             <DivisionsRow divisionsData={divisionsData} />
                         )}

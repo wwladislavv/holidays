@@ -8,7 +8,10 @@ const DisivionEventTableRow = ({
 }) => (
     <tr>
         <td className="date-cell">
-            {date.format('DD/MM/YYYY dd')}
+            {date.format('DD MMMM')}
+        </td>
+        <td className="weekday-cell">
+            {date.format('ddd').toUpperCase()}
         </td>
         <td className="flag-cell">
             {bunting && (

@@ -1,19 +1,23 @@
 import startCase from 'lodash/startCase';
-import sortBy from 'lodash/sortBy';
+import groupBy from 'lodash/groupBy';
 import moment from 'moment';
 
 const parseDivisionTitle = (divisionCode = '') => startCase(divisionCode.replaceAll('-', ' '));
 
+const parseEvents = (events = []) => events.map(
+    (item = {}) => ({
+        ...item,
+        date: item.date ? moment(item.date) : item.date
+    })
+);
+const groupEventsByYear = (events = []) => groupBy(events, (value) => (value.date ? moment(value.date).format('YYYY') : 'No Date'));
 // eslint-disable-next-line import/prefer-default-export
 export const parseHolidaysData = (holidaysDataByDivision = {}) => Object.keys(holidaysDataByDivision).reduce(
     (result, divisionKeyName) => ({
         ...result,
         [divisionKeyName]: {
             ...holidaysDataByDivision[divisionKeyName],
-            events: sortBy(
-                holidaysDataByDivision[divisionKeyName]?.events || [],
-                ['date', 'title']
-            ).map((item) => ({ ...item, date: moment(item.date) })),
+            eventsByYear: groupEventsByYear(parseEvents(holidaysDataByDivision[divisionKeyName]?.events)),
             divisionTitle: parseDivisionTitle(holidaysDataByDivision[divisionKeyName]?.division),
         }
     }),
