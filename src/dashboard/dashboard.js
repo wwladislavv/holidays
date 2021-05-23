@@ -38,7 +38,7 @@ const Dashboard = () => {
     );
 
     const renderDashboardRouteWithProps = useMemo(() => ({
-        root: () => (!isNull(divisionsData) ? <DivisionsRow divisionsData={divisionsData} /> : 'No Data'),
+        root: () => (!isNull(divisionsData) ? <DivisionsRow divisionsData={divisionsData} /> : (!fetchingDivisionsData && 'No Data')),
         details: (routeProps) => (
             <Row
                 className="dashboard-page__row single"
@@ -52,7 +52,7 @@ const Dashboard = () => {
                 )}
             </Row>
         ),
-    }), [divisionsData]);
+    }), [divisionsData, fetchingDivisionsData]);
 
     return (
         <div className="dashboard-page">

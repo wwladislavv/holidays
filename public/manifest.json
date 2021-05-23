@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "UK Bank holidays",
+  "name": "UK Bank holidays Application",
   "icons": [
     {
       "src": "favicon.ico",
